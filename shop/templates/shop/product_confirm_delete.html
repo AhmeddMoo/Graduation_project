@@ -1,0 +1,6 @@
+<h3>Are you sure you want delete?</h3>
+<form  method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Yes, delete</button>
+    <a href="{% url 'product_detail' product.pk %}" class="btn btn-secondary">Cancel</a>
+    </form>

@@ -1,0 +1,222 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shop Home</title>
+    <link rel="stylesheet" href="{% static 'css/style_one.css' %}" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+      integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="icon" href="{% static 'images/icons.jpeg' %}">
+  </head>
+  <body class="home_first">
+    
+    <nav class="navbar navbar-expand-lg navbar-light bg-body shadow-sm">
+      <div class="container">
+        <a class="navbar-brand fw-bold" href="{% url 'home' %}">Shop</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'home' %}">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'order_list' %}">Orders</a>
+            </li>
+            <li class="nav-item">
+              
+              <a class="nav-link" href="{% url 'cart_items' %}"><i class="fa-solid fa-cart-shopping "></i>Cart</a>
+            </li>
+          </ul>
+
+          <ul class="navbar-nav ms-auto">
+            {% if user.is_authenticated %}
+            <li class="nav-item">
+              <span class="nav-link">Hello, {{ user.username }}</span>
+            </li>
+            <li class="nav-item">
+              <form action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+                <button
+                  type="submit"
+                  class="btn btn-outline-secondary border-0 pt-2 btn-sm fs-6"
+                >{% csrf_token %}
+                  Logout
+                </button>
+              </form>
+            </li>
+            <li class="ms-2">
+              <span class=" ms-2  mt-2 fs-5" >Add</span><a href="{% url 'product_add' %}"><i class="fa-solid fa-plus text-black ms-2  mt-2 fs-4 "></i></a>
+
+            </li>
+            {% else %}
+            <li class="nav-item">
+              <a
+                class="nav-link btn btn-outline-primary btn-sm me-2"
+                href="{% url 'login' %}"
+                >Login</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link btn btn-primary btn-sm"
+                href="{% url 'register' %}"
+                >Register</a
+              >
+            </li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+
+    <section class="first_home">
+      <div class="first_section">
+        <div class="text_home">
+          <h1 class="fw-bold text-light">Welcome to Our Shop</h1>
+          <p class="mt-3 fs-4">
+            Discover a wide range of products at unbeatable prices.<br /><span
+              >Shop now and enjoy exclusive deals!</span
+            >
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="second_home">
+      <div class="second_section">
+        <div class="text_second">
+          <h1 class="fw-bold">Explore Our Latest Collection</h1>
+          <p class="mt-3 fs-5">
+            Check out the newest arrivals and exclusive products. Don't miss out
+            on our latest offers!
+          </p>
+          <a href="#" class="btn btn-warning btn-lg mt-3">Shop Now</a><br>
+          <a href="{% url 'product_add' %}" class="btn btn-light-subtle text-light btn-lg mt-2">Add product</a>
+        </div>
+      </div>
+    </section>
+
+    <div class="routet">
+      <i class="fa-solid fa-gear text-white pt-1 fs-4"></i>
+    </div>
+
+
+    <section class="products_home py-5">
+      <div class="container">
+        <h2 class="text-center fw-bold mb-5 text-light">Our Products</h2>
+        <div class="row g-4">
+          {% for product in products %}
+          <div class="col-md-4 col-sm-6">
+            <a
+              href="{% url 'product_detail' product.pk %}"
+              class="text-decoration-none text-dark"
+            >
+              <div class="card product-card">
+                {% if product.image %}
+                <img
+                  src="{{ product.image.url }}"
+                  class="card-img-top"
+                  alt="{{ product.name }}"
+                />
+                {% else %}
+                <img
+                  src="{% static 'shop/images/placeholder.png' %}"
+                  class="card-img-top"
+                  alt="No image"
+                />
+                {% endif %}
+                <div class="card-body text-center">
+                  <h5 class="card-title">{{ product.name }}</h5>
+                  <p class="card-text">${{ product.price }}</p>
+                </div>
+              </div>
+            </a>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+
+  
+    <footer class="bg-dark text-white pt-4">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-4 mb-3">
+            <h5>About Shop</h5>
+            <p>
+              We provide the best products at unbeatable prices. Shop with
+              confidence and enjoy exclusive deals every day!
+            </p>
+          </div>
+          <div class="col-md-4 mb-3">
+            <h5>Quick Links</h5>
+            <ul class="list-unstyled">
+              <li>
+                <a
+                  href="{% url 'home' %}"
+                  class="text-white text-decoration-none"
+                  >Home</a
+                >
+              </li>
+              <li>
+                <a
+                  href="{% url 'cart_items' %}"
+                  class="text-white text-decoration-none"
+                  >Cart</a
+                >
+              </li>
+              <li>
+                <a
+                  href="{% url 'order_list' %}"
+                  class="text-white text-decoration-none"
+                  >Orders</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div class="col-md-4 mb-3">
+            <h5 class="totch">Contact Us</h5>
+            <p class="totch">Email: ahmed@shop.com</p>
+            <p class="totch">Phone: +20 127 813 5971</p>
+            <div>
+              <a class="totch" href="#"><i class="fab fa-facebook"></i></a>
+              <a class="totch" href="#"><i class="fab fa-twitter"></i></a>
+              <a class="totch" href="#"><i class="fab fa-instagram"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

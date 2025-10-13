@@ -1,0 +1,21 @@
+/* بسيط ونظيف */
+body {
+  background: #f8fafc;
+  color: #333;
+}
+
+.product-img {
+  height: 180px;
+  object-fit: cover;
+}
+
+/* card hover */
+.card:hover {
+  transform: translateY(-3px);
+  transition: .15s ease;
+}
+
+/* make form buttons small on mobile */
+@media (max-width: 576px) {
+  .product-img { height: 140px; }
+}
