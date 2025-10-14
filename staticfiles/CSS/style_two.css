@@ -1,0 +1,17 @@
+section.py-5 img {
+  max-height: 450px;
+  object-fit: cover;
+}
+
+section.py-5 h2 {
+  margin-top: 20px;
+}
+
+section.py-5 .btn {
+  border-radius: 25px;
+  transition: transform 0.3s ease;
+}
+
+section.py-5 .btn:hover {
+  transform: scale(1.05);
+}
