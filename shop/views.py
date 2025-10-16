@@ -9,9 +9,8 @@ from django.views.generic import (
     DeleteView,
 )
 from django.contrib.auth.views import LoginView, LogoutView
-from django.contrib.auth import authenticate,login
 from django.contrib.auth.models import User
-from django.contrib.auth.mixins import LoginRequiredMixin,UserPassesTestMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 
 
@@ -27,13 +26,10 @@ class Product_DetailView(DetailView):
     context_object_name = "Details_product"
 
 
-class Product_DeleteView(DeleteView,UserPassesTestMixin):
+class Product_DeleteView(DeleteView):
     model = Product
     template_name = "shop/product_confirm_delete.html"
     success_url = reverse_lazy("home")
-    def test_func(self):
-        product = self.get_object()
-        return self.request.user == product.user
 
 
 class Product_CreateView(LoginRequiredMixin,CreateView):
@@ -41,19 +37,13 @@ class Product_CreateView(LoginRequiredMixin,CreateView):
     template_name = "shop/product_form.html"
     fields = ["name", "description", "price", "stock", "image"]
     success_url = reverse_lazy("home")
-    def form_valid(self, form):
-        form.instance.user = self.request.user 
-        return super().form_valid(form)
 
 
-class Product_UpdateView(UpdateView,UserPassesTestMixin):
+class Product_UpdateView(UpdateView):
     model = Product
     template_name = "shop/product_form.html"
     fields = ["name", "description", "price", "stock", "image"]
     success_url = reverse_lazy("home")
-    def test_func(self):
-        product = self.get_object()
-        return self.request.user == product.user
 
 
 class CartItemListView(LoginRequiredMixin,ListView):
@@ -145,8 +135,6 @@ class Register(CreateView):
 
        
         User.objects.create_user(username=username, password=password1)
-        user = authenticate(username=username, password=password1)
-        login(request, user)
         return redirect("login")
 
 # Create your views here.
