@@ -10,7 +10,7 @@ from django.views.generic import (
 )
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.models import User
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin,UserPassesTestMixin
 from django.urls import reverse_lazy
 
 
@@ -26,10 +26,13 @@ class Product_DetailView(DetailView):
     context_object_name = "Details_product"
 
 
-class Product_DeleteView(DeleteView):
+class Product_DeleteView(DeleteView,UserPassesTestMixin):
     model = Product
     template_name = "shop/product_confirm_delete.html"
     success_url = reverse_lazy("home")
+    def test_func(self):
+        product = self.get_object()
+        return self.request.user == product.user
 
 
 class Product_CreateView(LoginRequiredMixin,CreateView):
@@ -37,13 +40,19 @@ class Product_CreateView(LoginRequiredMixin,CreateView):
     template_name = "shop/product_form.html"
     fields = ["name", "description", "price", "stock", "image"]
     success_url = reverse_lazy("home")
+    def form_valid(self, form):
+        form.instance.user = self.request.user 
+        return super().form_valid(form)
 
 
-class Product_UpdateView(UpdateView):
+class Product_UpdateView(UpdateView,UserPassesTestMixin):
     model = Product
     template_name = "shop/product_form.html"
     fields = ["name", "description", "price", "stock", "image"]
     success_url = reverse_lazy("home")
+    def test_func(self):
+        product = self.get_object()
+        return self.request.user == product.user
 
 
 class CartItemListView(LoginRequiredMixin,ListView):
