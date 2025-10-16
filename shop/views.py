@@ -9,6 +9,7 @@ from django.views.generic import (
     DeleteView,
 )
 from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth import authenticate,login
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin,UserPassesTestMixin
 from django.urls import reverse_lazy
@@ -144,6 +145,8 @@ class Register(CreateView):
 
        
         User.objects.create_user(username=username, password=password1)
+        user = authenticate(username=username, password=password1)
+        login(request, user)
         return redirect("login")
 
 # Create your views here.
