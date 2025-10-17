@@ -53,7 +53,7 @@
           </ul>
 
           <ul class="navbar-nav ms-auto">
-            {% if user.is_authenticated %}
+            {% if user.is_authenticated or user == Details_product.user %}
             <li class="nav-item">
               <span class="nav-link">Hello, {{ user.username }}</span>
             </li>
