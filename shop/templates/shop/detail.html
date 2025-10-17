@@ -71,9 +71,14 @@
           </form>
 
           <a href="{% url 'home' %}" class="btn btn-outline-primary btn-lg mt-3 ms-2">Back to Shop</a><br>
+          
+          {% if user.is_staff %}
+            
           <a href="{% url 'product_delete' Details_product.pk %}" class="btn btn-outline-danger btn-lg mt-3 ms-2">Delete</a><br>
           <a href="{% url 'product_edit' Details_product.pk %}" class="btn btn-outline-secondary btn-lg mt-3 ms-2">Update</a>
         
+          {% endif %}
+            
 
 
         </form>
